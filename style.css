@@ -1,12 +1,24 @@
 .header {
+    font-family: Inria-Serif;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 15px;
 }
-.body {
+.content {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
     margin: 0;
     padding: 20px;
+}
+
+.add-to-cart {
+    background-color: #ff6b6b;        /* button background color */
+    color: white;                      /* text color */
+    padding: 10px 20px;                /* inside spacing */
+    border: none;                      /* remove border */
+    border-radius: 5px;                /* rounded corners */
+    font-size: 16px;                   /* text size */
+    cursor: pointer;                   /* pointer cursor on hover */
+    transition: 0.3s;                  /* smooth effect */
 }
