@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: flex-start;
     gap: 15px;
+    background-color: rgba(69, 133, 0, 0.72);
 }
 .content {
     font-family: Arial, sans-serif;
@@ -13,12 +14,12 @@
 }
 
 .add-to-cart {
-    background-color: #ff6b6b;        /* button background color */
-    color: white;                      /* text color */
-    padding: 10px 20px;                /* inside spacing */
-    border: none;                      /* remove border */
-    border-radius: 5px;                /* rounded corners */
-    font-size: 16px;                   /* text size */
-    cursor: pointer;                   /* pointer cursor on hover */
-    transition: 0.3s;                  /* smooth effect */
+    background-color: rgba(69, 133, 0, 0.72)        
+    color: black;                      
+    padding: 10px 20px;                
+    border: none;                     
+    border-radius: 5px;               
+    font-size: 16px;                  
+    cursor: pointer;                  
+    transition: 0.3s;                  
 }
