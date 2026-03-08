@@ -1,4 +1,4 @@
-/* cart managment */
+// Shopping cart management system
 
 products = [
     { name: "Pipore 250G", price: 150 },
@@ -6,50 +6,76 @@ products = [
     { name: "Royale 500G", price: 200 }
 ];
 
+let cart = [];
 
-// Modal management 
-
-function openForm(product) {
-    document.getElementById("modal").classList.add("show");
-    document.getElementById("overlay").classList.add("show");
-    document.getElementById("productName").innerText = "Product: " + product;
-
-}
-
-function closeForm() {
-    document.getElementById("modal").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
-
+// Handle form submission and add product to cart
 function submitOrder(e) {
     e.preventDefault();
-    let formInputs = e.target.querySlectorAll("input");
-    // extract data from form inputs and add to cart
-    addToCart(formInputs);
-    closeForm()
+    let form = e.target;
+    let productName = document.getElementById("cartProductName").innerText.replace("Product: ", "");
+
+    let fullName = form.querySelector('input[name="fullName"]').value;
+    let phone = form.querySelector('input[name="phone"]').value;
+    let address = form.querySelector('input[name="address"]').value;
+
+    let product = products.find(p => p.name === productName);
+
+    addToCart({
+        name: product.name,
+        price: product.price,
+        fullName: fullName,
+        phone: phone,
+        address: address
+    });
+
+    document.getElementById("form-section").style.display = "none";
+    form.reset();
 }
 
-
-let cart = [
-
-]
-
+// Add product to cart or increase quantity
 function addToCart(product) {
-    cart.push(product);
+    let existingItem = cart.find(item => item.name === product.name);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        product.quantity = 1;
+        cart.push(product);
+    }
     renderCart();
-    closeForm();
 }
 
-
-function removeFormCart() {
-    document.getElementById("cart").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-    // Remove product from cart array
-
+// Open order form for selected product
+function openForm(product) {
+    document.getElementById("cart-panel").style.display = "block";
+    document.getElementById("form-section").style.display = "block";
+    document.getElementById("cartProductName").innerText = "Product: " + product;
 }
 
+// Hide the order form
+function cancelOrder() {
+    document.getElementById("form-section").style.display = "none";
+}
 
-
+// Display cart items and calculate total
 function renderCart() {
-
+    let cartItems = document.getElementById("cart-items");
+    let subtotal = document.getElementById("subtotal");
+    cartItems.innerHTML = "";
+    let total = 0;
+    
+    cart.forEach(item => {
+        let p = document.createElement("p");
+        const itemTotal = item.price * item.quantity;
+        p.innerText = item.name + " x" + item.quantity + " = L.E " + itemTotal;
+        cartItems.appendChild(p);
+        total += itemTotal;
+    });
+    subtotal.innerText = total;
 }
+
+// Toggle cart panel visibility
+document.querySelector(".cart-icon").addEventListener("click", function () {
+    const cartPanel = document.getElementById("cart-panel");
+    cartPanel.style.display = cartPanel.style.display === "none" ? "block" : "none";
+});
