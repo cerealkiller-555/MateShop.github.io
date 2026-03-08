@@ -8,6 +8,23 @@ products = [
 
 let cart = [];
 
+// Add product to cart or increase quantity
+function addToCart(productName, productPrice) {
+    const product = { name: productName, price: productPrice };
+    let existingItem = cart.find(item => item.name === product.name);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        product.quantity = 1;
+        cart.push(product);
+    }
+    
+    // Show cart panel
+    document.getElementById("cart-panel").style.display = "block";
+    renderCart();
+}
+
 // Handle final order submission with delivery details
 function submitOrder(e) {
     e.preventDefault();
@@ -33,21 +50,6 @@ function submitOrder(e) {
     form.reset();
     renderCart();
 }
-Name, productPrice) {
-    const product = { name: productName, price: productPrice };
-    let existingItem = cart.find(item => item.name === product.name);
-    
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        product.quantity = 1;
-        cart.push(product);
-    }
-    
-    // Show cart panel
-    document.getElementById("cart-panel").style.display = "block";
-    renderCart();
-}
 
 // Open order form to enter delivery details
 function showCheckout() {
@@ -55,9 +57,7 @@ function showCheckout() {
         alert("Cart is empty!");
         return;
     }
-    document.getElementById("form-section").style.display = "block"
     document.getElementById("form-section").style.display = "block";
-    document.getElementById("cartProductName").innerText = "Product: " + product;
 }
 
 // Hide the order form
