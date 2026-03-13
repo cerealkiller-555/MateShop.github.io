@@ -77,5 +77,4 @@ This is a learning project. Feel free to fork and experiment with improvements!
 
 ## License
 
-This project is for educational purposes.</content>
-<parameter name="filePath">/home/malak/.vscode/extensions/algoritmika.algopython-20251111.203400.0/temp/Product-Card/README.md
+This project is for educational purposes.
