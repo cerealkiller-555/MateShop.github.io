@@ -188,10 +188,10 @@ if (productImage) {
 ## 6) Website Improvement Checklist
 
 ### 6.1 Core Shopping Experience
-- [ ] Add a cart panel that shows selected items, quantity, and subtotal.
-- [ ] Make Add to Cart actually update cart state.
-- [ ] Support quantity increase/decrease and remove item actions.
-- [ ] Show total price and item count in cart.
+- [-] Add a cart panel that shows selected items, quantity, and subtotal.
+- [-] Make Add to Cart actually update cart state.
+- [-] Support quantity increase/decrease and remove item actions.
+- [-] Show total price and item count in cart.
 - [ ] Persist cart using `localStorage`.
 
 ### 6.2 Checkout Form & Submit Conditions

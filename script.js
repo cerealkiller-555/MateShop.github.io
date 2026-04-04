@@ -9,25 +9,23 @@ const products = [
 
 // User's shopping cart (empty when page loads)
 let cart = [];
+let cartPanel = document.getElementById("cart-panel");
+let cartItems = document.getElementById("cart-items");
+let subtotal = document.getElementById("subtotal");
+let cartCount = document.getElementById("cart-count");
+let cartToggleButton = document.getElementById("cart-toggle");
 
-// ====== GET PAGE ELEMENTS (HTML buttons and divs) ======
-const cartPanel = document.getElementById("cart-panel");
-const cartItems = document.getElementById("cart-items");
-const subtotal = document.getElementById("subtotal");
-const cartCount = document.getElementById("cart-count");
-const cartToggleButton = document.getElementById("cart-toggle");
+let orderForm = document.getElementById("order-form");
+let summaryList = document.getElementById("summary-list");
+let summaryTotal = document.getElementById("summary-total");
 
-const orderForm = document.getElementById("order-form");
-const summaryList = document.getElementById("summary-list");
-const summaryTotal = document.getElementById("summary-total");
-
-const STORAGE_KEY = "sipCart";
+let STORAGE_KEY = "sipCart";
 
 // ====== STORAGE ======
 function loadCart() {
     try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : null;
+        let raw = localStorage.getItem(STORAGE_KEY);
+        let parsed = raw ? JSON.parse(raw) : null;
         if (Array.isArray(parsed)) {
             cart = parsed;
         }
@@ -47,7 +45,7 @@ function saveCart() {
 // ====== CART RENDERING ======
 function updateCartDisplay() {
     if (cartCount) {
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         cartCount.innerText = totalItems;
     }
 
@@ -65,30 +63,30 @@ function updateCartDisplay() {
     let totalPrice = 0;
 
     cart.forEach((item, index) => {
-        const itemPrice = item.price * item.quantity;
+        let itemPrice = item.price * item.quantity;
         totalPrice += itemPrice;
 
-        const row = document.createElement("div");
+        let row = document.createElement("div");
         row.className = "cart-row";
 
-        const itemText = document.createElement("span");
+        let itemText = document.createElement("span");
         itemText.innerText = `${item.name} = L.E ${itemPrice}`;
 
-        const buttonBox = document.createElement("div");
+        let buttonBox = document.createElement("div");
         buttonBox.className = "qty-control";
 
-        const minusBtn = document.createElement("button");
+        let minusBtn = document.createElement("button");
         minusBtn.type = "button";
         minusBtn.innerText = "-";
         minusBtn.className = "qty-btn";
         minusBtn.setAttribute("aria-label", `Decrease quantity for ${item.name}`);
         minusBtn.addEventListener("click", () => decreaseQuantity(index));
 
-        const qtyNumber = document.createElement("span");
+        let qtyNumber = document.createElement("span");
         qtyNumber.className = "qty-value";
         qtyNumber.innerText = item.quantity;
 
-        const plusBtn = document.createElement("button");
+        let plusBtn = document.createElement("button");
         plusBtn.type = "button";
         plusBtn.innerText = "+";
         plusBtn.className = "qty-btn";
@@ -116,7 +114,7 @@ function renderCheckoutSummary() {
 
     let totalPrice = 0;
     cart.forEach(item => {
-        const li = document.createElement("li");
+        let li = document.createElement("li");
         li.textContent = `${item.name} x ${item.quantity} - L.E ${item.price * item.quantity}`;
         summaryList.appendChild(li);
         totalPrice += item.price * item.quantity;
@@ -124,13 +122,14 @@ function renderCheckoutSummary() {
 
     summaryTotal.textContent = `Total: L.E ${totalPrice}`;
 }
+// ====== Form Validation ======
 
 // ====== CART MANAGEMENT ======
 function addToCart(productName) {
-    const product = products.find((p) => p.name === productName);
+    let product = products.find((p) => p.name === productName);
     if (!product) return;
 
-    const existing = cart.find((c) => c.name === productName);
+    let existing = cart.find((c) => c.name === productName);
     if (existing) {
         existing.quantity += 1;
     } else {
@@ -160,7 +159,7 @@ function decreaseQuantity(index) {
 
 function toggleCart() {
     if (!cartPanel) return;
-    const isOpen = cartPanel.style.display === "block";
+    let isOpen = cartPanel.style.display === "block";
     cartPanel.style.display = isOpen ? "none" : "block";
 }
 
@@ -173,6 +172,7 @@ function initOutsideClickListener() {
         cartPanel.style.display = "none";
     });
 }
+
 
 function submitOrder(event) {
     if (event) event.preventDefault();
@@ -213,7 +213,7 @@ function init() {
         });
     }
 
-    const addButtons = document.querySelectorAll(".js-add-to-cart");
+    let addButtons = document.querySelectorAll(".js-add-to-cart");
     addButtons.forEach((btn) => {
         btn.addEventListener("click", (event) => {
             event.preventDefault();
