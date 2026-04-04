@@ -52,19 +52,45 @@ body {
 
 /* Button */
 .add-to-cart {
-    background-color: #444;
-    color: #f5f5f5;
-    padding: 10px;
     border: none;
-    border-radius: 5px;
+    background: rgb(83, 63, 71);
+    background: linear-gradient(0deg, #444 0%, #444 100%);
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+    padding: 10px;
     cursor: pointer;
     width: 100%;
     font-size: 16px;
-    transition: background 0.3s;
+    border-radius: 5px;
 }
 
 .add-to-cart:hover {
-    background-color: #666;
+    text-decoration: none;
+    color: #fff;
+}
+
+.add-to-cart:before {
+    position: absolute;
+    content: '';
+    display: inline-block;
+    top: -180px;
+    left: 0;
+    width: 30px;
+    height: 100%;
+    background-color: #fff;
+    animation: shiny-btn1 3s ease-in-out infinite;
+}
+
+.add-to-cart:hover {
+    opacity: .7;
+}
+
+.add-to-cart:active {
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, .3),
+        -4px -4px 6px 0 rgba(116, 125, 136, .2),
+        inset -4px -4px 6px 0 rgba(255, 255, 255, .2),
+        inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
 }
 
 .icon-button {
@@ -151,4 +177,48 @@ body {
     margin: 0 0 12px;
     color: #ffdcbf;
     font-weight: 700;
+}
+
+@-webkit-keyframes shiny-btn1 {
+    0% {
+        -webkit-transform: scale(0) rotate(45deg);
+        opacity: 0;
+    }
+
+    80% {
+        -webkit-transform: scale(0) rotate(45deg);
+        opacity: 0.5;
+    }
+
+    81% {
+        -webkit-transform: scale(4) rotate(45deg);
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: scale(50) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+@keyframes shiny-btn1 {
+    0% {
+        transform: scale(0) rotate(45deg);
+        opacity: 0;
+    }
+
+    80% {
+        transform: scale(0) rotate(45deg);
+        opacity: 0.5;
+    }
+
+    81% {
+        transform: scale(4) rotate(45deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(50) rotate(45deg);
+        opacity: 0;
+    }
 }
