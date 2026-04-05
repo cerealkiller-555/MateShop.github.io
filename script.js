@@ -80,7 +80,10 @@ function updateCartDisplay() {
         minusBtn.innerText = "-";
         minusBtn.className = "qty-btn";
         minusBtn.setAttribute("aria-label", `Decrease quantity for ${item.name}`);
-        minusBtn.addEventListener("click", () => decreaseQuantity(index));
+        minusBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            decreaseQuantity(index);
+        });
 
         let qtyNumber = document.createElement("span");
         qtyNumber.className = "qty-value";
@@ -91,7 +94,10 @@ function updateCartDisplay() {
         plusBtn.innerText = "+";
         plusBtn.className = "qty-btn";
         plusBtn.setAttribute("aria-label", `Increase quantity for ${item.name}`);
-        plusBtn.addEventListener("click", () => increaseQuantity(index));
+        plusBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            increaseQuantity(index);
+        });
 
         buttonBox.appendChild(minusBtn);
         buttonBox.appendChild(qtyNumber);
@@ -135,7 +141,6 @@ function addToCart(productName) {
     } else {
         cart.push({ name: product.name, price: product.price, quantity: 1 });
     }
-
     updateCartDisplay();
 }
 
@@ -204,7 +209,7 @@ function init() {
     loadCart();
     updateCartDisplay();
     renderCheckoutSummary();
-    initOutsideClickListener();
+    // initOutsideClickListener(); // Removed to prevent cart from closing on outside click
 
     if (cartToggleButton) {
         cartToggleButton.addEventListener("click", (event) => {

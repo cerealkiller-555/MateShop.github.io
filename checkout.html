@@ -28,17 +28,18 @@
     </section>
 
     <form class="modal" id="checkout-form" type="button" aria-label="Checkout form">
+        <div>
+            <label for="fullName">Full Name</label>
+            <input id="fullName" type="text" name="fullName" required>
 
-        <label for="fullName">Full Name</label>
-        <input id="fullName" type="text" name="fullName" required>
+            <label for="phone">Phone Number</label>
+            <input id="phone" type="tel" name="phone" required>
 
-        <label for="phone">Phone Number</label>
-        <input id="phone" type="tel" name="phone" required>
+            <label for="address">Address</label>
+            <input id="address" type="text" name="address" required>
 
-        <label for="address">Address</label>
-        <input id="address" type="text" name="address" required>
-
-        <button type="submit" class="add-to-cart">Confirm Order</button>
+            <button type="submit" class="add-to-cart">Confirm Order</button>
+        </div>
     </form>
 
     <script src="script.js"></script>
