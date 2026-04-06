@@ -105,13 +105,18 @@ body {
 /* ====== SHOPPING CART PANEL ====== */
 #cart-panel {
     display: none;
-    margin: 20px auto;
-    width: min(800px, calc(100% - 40px));
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 380px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
     padding: 25px;
     background: var(--card-bg);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 16px 50px rgba(42, 54, 38, 0.2);
     border: 1px solid var(--border-color);
+    z-index: 1000;
 }
 
 #cart-items {
@@ -430,6 +435,55 @@ body {
 .toast.show {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ====== FOOTER ====== */
+.site-footer {
+    background-color: var(--text-main);
+    color: #FDFBF7;
+    padding: 60px 20px 20px;
+    margin-top: 60px;
+}
+
+.footer-content {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-section h4 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    margin-top: 0;
+    color: var(--card-bg);
+}
+
+.footer-section p {
+    color: rgba(253, 251, 247, 0.7);
+    line-height: 1.6;
+}
+
+.footer-section a {
+    display: block;
+    color: rgba(253, 251, 247, 0.7);
+    text-decoration: none;
+    margin-bottom: 12px;
+    transition: color 0.2s;
+}
+
+.footer-section a:hover {
+    color: var(--card-bg);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    color: rgba(253, 251, 247, 0.5);
+    font-size: 0.9rem;
 }
 
 /* ====== RESPONSIVE LAYOUT ====== */

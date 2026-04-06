@@ -289,10 +289,12 @@ function submitOrder(event) {
         let successMsg = document.getElementById("order-success-message");
         let summary = document.getElementById("checkout-cart-summary");
         let form = document.getElementById("order-form");
+        let title = document.getElementById("checkout-title");
 
         if (successMsg) successMsg.style.display = "block";
         if (summary) summary.style.display = "none";
         if (form) form.style.display = "none";
+        if (title) title.style.display = "none";
 
         cart = [];
         updateCartDisplay();
@@ -312,10 +314,12 @@ function init() {
         let emptyMsg = document.getElementById("empty-cart-message");
         let summary = document.getElementById("checkout-cart-summary");
         let form = document.getElementById("order-form");
+        let title = document.getElementById("checkout-title");
 
         if (emptyMsg) emptyMsg.style.display = "block";
         if (summary) summary.style.display = "none";
         if (form) form.style.display = "none";
+        if (title) title.style.display = "none";
     }
 
     if (cartToggleButton) {
