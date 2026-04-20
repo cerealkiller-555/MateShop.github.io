@@ -20,6 +20,16 @@
         gtag('config', 'G-BC5Z3652HD');
     </script>
 
+    <!-- Authentication Check -->
+    <script>
+        // Check if user is authenticated
+        const token = localStorage.getItem('auth_token');
+        if (!token) {
+            // Redirect to login if not authenticated
+            window.location.href = 'login.html';
+        }
+    </script>
+
 </head>
 
 <body>
@@ -30,7 +40,7 @@
                 <h1>Sip & Energize</h1>
             </a>
             <div class="header-right">
-                <a href="login.html" class="login-link-nav">Login</a>
+                <a href="login.html" class="login-link-nav" id="logout-btn">Logout</a>
                 <button id="cart-toggle" class="icon-button" type="button" aria-label="Toggle shopping cart">
                     <img src="images/shopping-bag(1).png" class="cart-icon" width="45" alt="Shopping cart icon">
                     <span id="cart-count" aria-live="polite">0</span>

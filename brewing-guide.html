@@ -14,7 +14,8 @@
 
 <body>
     <header>
-        <div class="header">
+        <div class="header"> MONGODB_URI=your_mongo_connection_string
+            JWT_SECRET=change_this_to_random_string
             <a href="index.html" class="logo-link">
                 <img src="images/cup(1).png" width="50" alt="Sip & Energize logo cup icon">
                 <h1>Sip & Energize</h1>
@@ -40,40 +41,64 @@
             </a>
         </section>
 
-        <article class="info-page-content">
-            <div class="info-hero">
+        <article class="info-page-content brewing-guide">
+            <div class="info-hero brewing-hero">
+                <div class="brewing-hero-image">
+                    <img src="images/brewing-hero.png"
+                        alt="Beautiful arrangement of yerba mate gourd, bombilla, and steaming cup on a wooden table">
+                </div>
                 <h1>The Art of Brewing Yerba Mate</h1>
                 <p>From traditional gourds to modern infusers, discover the perfect way to prepare your mate.</p>
             </div>
 
             <div class="info-grid">
-                <div class="info-card">
-                    <h2>1. Traditional Gourd & Bombilla</h2>
-                    <p>The most authentic way to enjoy Yerba Mate, creating a unique ritual and social connection.</p>
-                    <ul>
-                        <li><strong>Fill:</strong> Add Mate leaves to your gourd until about 2/3 full.</li>
-                        <li><strong>Tilt:</strong> Shake the gourd so the leaves slope to one side.</li>
-                        <li><strong>Moisten:</strong> Pour a little cool water into the bottom of the "well".</li>
-                        <li><strong>Insert:</strong> Place your bombilla into the well.</li>
-                        <li><strong>Brew:</strong> Add hot (not boiling!) water (70°C-80°C) and enjoy.</li>
-                    </ul>
+                <div class="info-card has-image">
+                    <div class="info-card-image">
+                        <img src="images/brewing-gourd.png"
+                            alt="Traditional yerba mate gourd with bombilla and hot water being poured">
+                    </div>
+                    <div class="info-card-body">
+                        <h2>1. Traditional Gourd & Bombilla</h2>
+                        <p>The most authentic way to enjoy Yerba Mate, creating a unique ritual and social connection.
+                        </p>
+                        <ul>
+                            <li><strong>Fill:</strong> Add Mate leaves to your gourd until about 2/3 full.</li>
+                            <li><strong>Tilt:</strong> Shake the gourd so the leaves slope to one side.</li>
+                            <li><strong>Moisten:</strong> Pour a little cool water into the bottom of the "well".</li>
+                            <li><strong>Insert:</strong> Place your bombilla into the well.</li>
+                            <li><strong>Brew:</strong> Add hot (not boiling!) water (70°C-80°C) and enjoy.</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="info-card">
-                    <h2>2. French Press Method</h2>
-                    <p>Perfect for those who want the energy boost without the traditional ritual.</p>
-                    <ul>
-                        <li>Add 1-2 tablespoons of Mate per cup.</li>
-                        <li>Moisten with cool water first to protect the flavor.</li>
-                        <li>Add hot water and let steep for 3-5 minutes.</li>
-                        <li>Press slowly and pour.</li>
-                    </ul>
+                <div class="info-card has-image">
+                    <div class="info-card-image">
+                        <img src="images/brewing-french-press.png"
+                            alt="Glass French press filled with brewed yerba mate tea">
+                    </div>
+                    <div class="info-card-body">
+                        <h2>2. French Press Method</h2>
+                        <p>Perfect for those who want the energy boost without the traditional ritual.</p>
+                        <ul>
+                            <li>Add 1-2 tablespoons of Mate per cup.</li>
+                            <li>Moisten with cool water first to protect the flavor.</li>
+                            <li>Add hot water and let steep for 3-5 minutes.</li>
+                            <li>Press slowly and pour.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <div class="important-note">
-                <h3>Pro Tip: Never Use Boiling Water</h3>
-                <p>Boiling water (100°C) will burn the leaves and create a bitter taste. Aim for 75°C (167°F) for the smoothest flavor profile and maximum nutrient retention.</p>
+            <div class="important-note has-tip-image">
+                <div class="tip-content">
+                    <h3>Pro Tip: Never Use Boiling Water</h3>
+                    <p>Boiling water (100°C) will burn the leaves and create a bitter taste. Aim for 75°C (167°F) for
+                        the smoothest flavor profile and maximum nutrient retention.</p>
+                </div>
+                <div class="tip-image">
+                    <img src="images/brewing-temperature.png"
+                        alt="Thermometer showing ideal 75°C water temperature for yerba mate">
+                </div>
             </div>
         </article>
     </main>

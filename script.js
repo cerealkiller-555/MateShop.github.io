@@ -1,5 +1,10 @@
 // ====== SETUP DATA ======
 
+// API Configuration
+const API_BASE_URL = 'http://localhost:5000/api'; // Change this to your deployed server URL
+const AUTH_TOKEN_KEY = 'auth_token';
+const USER_DATA_KEY = 'user_data';
+
 // All products we sell in the store
 let products = [
     { name: "Sara 1KG", price: 300 },
@@ -302,12 +307,171 @@ function submitOrder(event) {
     }
 }
 
+// ====== AUTHENTICATION ======
+
+// Check if user is authenticated
+function isAuthenticated() {
+    return !!localStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+// Get stored auth token
+function getAuthToken() {
+    return localStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+// Get stored user data
+function getUserData() {
+    const data = localStorage.getItem(USER_DATA_KEY);
+    return data ? JSON.parse(data) : null;
+}
+
+// Save auth token
+function saveAuthToken(token) {
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+}
+
+// Save user data
+function saveUserData(userData) {
+    localStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
+}
+
+// Logout user
+function logout() {
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    localStorage.removeItem(USER_DATA_KEY);
+    showToast('Logged out successfully');
+    window.location.href = 'login.html';
+}
+
+// Handle Login Form Submission
+document.addEventListener('DOMContentLoaded', function () {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const toggleRegisterLink = document.getElementById('toggle-register');
+    const toggleLoginLink = document.getElementById('toggle-login');
+    const loginView = document.getElementById('login-view');
+    const registerView = document.getElementById('register-view');
+
+    // Toggle between login and register views
+    if (toggleRegisterLink) {
+        toggleRegisterLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginView.style.display = 'none';
+            registerView.style.display = 'block';
+        });
+    }
+
+    if (toggleLoginLink) {
+        toggleLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerView.style.display = 'none';
+            loginView.style.display = 'block';
+        });
+    }
+
+    // Login Form Handler
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorDiv = document.getElementById('login-error');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    saveAuthToken(data.token);
+                    saveUserData(data.user);
+                    showToast('Login successful! Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    errorDiv.textContent = data.message || 'Login failed';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorDiv.textContent = 'Error connecting to server. Make sure backend is running.';
+                errorDiv.style.display = 'block';
+            }
+        });
+    }
+
+    // Register Form Handler
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const firstName = document.getElementById('reg-firstName').value;
+            const lastName = document.getElementById('reg-lastName').value;
+            const errorDiv = document.getElementById('register-error');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        firstName,
+                        lastName
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    saveAuthToken(data.token);
+                    saveUserData(data.user);
+                    showToast('Account created! Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    errorDiv.textContent = data.message || 'Registration failed';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                errorDiv.textContent = 'Error connecting to server. Make sure backend is running.';
+                errorDiv.style.display = 'block';
+            }
+        });
+    }
+});
+
 // ====== INIT ======
 function init() {
     loadCart();
     updateCartDisplay();
     renderCheckoutSummary();
     initOutsideClickListener();
+
+    // Handle logout button
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+    }
 
     // Check if we are on checkout page and cart is empty
     let isCheckoutPage = !!document.getElementById("checkout-cart-summary");

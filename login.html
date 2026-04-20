@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="images/cup(1).png">
     <title>Login | Sip & Energize</title>
@@ -45,32 +47,75 @@
 
         <div class="login-container">
             <div class="login-card">
-                <div class="login-header">
-                    <img src="images/cup(1).png" width="60" alt="Logo" style="margin-bottom: 20px; filter: brightness(0) saturate(100%) invert(18%) sepia(14%) saturate(1443%) hue-rotate(69deg) brightness(97%) contrast(92%);">
-                    <h2>Welcome Back</h2>
-                    <p>Unlock your sustained energy experience.</p>
+                <!-- Login Form -->
+                <div id="login-view" class="auth-view active">
+                    <div class="login-header">
+                        <img src="images/cup(1).png" width="60" alt="Logo"
+                            style="margin-bottom: 20px; filter: brightness(0) saturate(100%) invert(18%) sepia(14%) saturate(1443%) hue-rotate(69deg) brightness(97%) contrast(92%);">
+                        <h2>Welcome Back</h2>
+                        <p>Unlock your sustained energy experience.</p>
+                    </div>
+                    <form id="login-form" class="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email Address</label>
+                            <input type="email" id="login-email" name="email" placeholder="hello@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" name="password" placeholder="••••••••" required>
+                        </div>
+                        <div class="login-options">
+                            <label class="remember-me">
+                                <input type="checkbox" name="remember">
+                                <span>Keep me energized</span>
+                            </label>
+                            <a href="#" class="forgot-password">Forgot password?</a>
+                        </div>
+                        <button type="submit" class="login-button">Sign In to Account</button>
+                        <div id="login-error" class="error-message" style="display: none;"></div>
+                        <div class="login-footer">
+                            <p>New to Sip & Energize? <a href="#" id="toggle-register">Join the community</a></p>
+                        </div>
+                    </form>
                 </div>
-                <form id="login-form" class="login-form">
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="hello@example.com" required>
+
+                <!-- Register Form -->
+                <div id="register-view" class="auth-view" style="display: none;">
+                    <div class="login-header">
+                        <img src="images/cup(1).png" width="60" alt="Logo"
+                            style="margin-bottom: 20px; filter: brightness(0) saturate(100%) invert(18%) sepia(14%) saturate(1443%) hue-rotate(69deg) brightness(97%) contrast(92%);">
+                        <h2>Join Our Community</h2>
+                        <p>Start your energy journey with Sip & Energize</p>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="••••••••" required>
-                    </div>
-                    <div class="login-options">
-                        <label class="remember-me">
-                            <input type="checkbox" name="remember">
-                            <span>Keep me energized</span>
-                        </label>
-                        <a href="#" class="forgot-password">Forgot password?</a>
-                    </div>
-                    <button type="submit" class="login-button">Sign In to Account</button>
-                    <div class="login-footer">
-                        <p>New to Sip & Energize? <a href="#">Join the community</a></p>
-                    </div>
-                </form>
+                    <form id="register-form" class="login-form">
+                        <div class="form-group">
+                            <label for="reg-username">Username</label>
+                            <input type="text" id="reg-username" name="username" placeholder="Choose a username"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-email">Email Address</label>
+                            <input type="email" id="reg-email" name="email" placeholder="hello@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-password">Password</label>
+                            <input type="password" id="reg-password" name="password" placeholder="••••••••" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-firstName">First Name (Optional)</label>
+                            <input type="text" id="reg-firstName" name="firstName" placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-lastName">Last Name (Optional)</label>
+                            <input type="text" id="reg-lastName" name="lastName" placeholder="Doe">
+                        </div>
+                        <button type="submit" class="login-button">Create Account</button>
+                        <div id="register-error" class="error-message" style="display: none;"></div>
+                        <div class="login-footer">
+                            <p>Already have an account? <a href="#" id="toggle-login">Sign in here</a></p>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </main>

@@ -7,11 +7,11 @@
     --accent: #4C7249;
     --accent-hover: #3A5837;
     --border-color: #E8E5DF;
-    
+
     --shadow-sm: 0 2px 8px rgba(42, 54, 38, 0.05);
     --shadow-md: 0 8px 30px rgba(42, 54, 38, 0.06);
     --shadow-hover: 0 16px 40px rgba(42, 54, 38, 0.1);
-    
+
     --radius-sm: 8px;
     --radius-md: 16px;
     --radius-lg: 20px;
@@ -117,7 +117,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 2px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* ====== SHOPPING CART PANEL ====== */
@@ -259,7 +259,8 @@ body {
 .product-card {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
-    width: 280px; /* Larger size */
+    width: 280px;
+    /* Larger size */
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -287,7 +288,8 @@ body {
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
-    mix-blend-mode: multiply; /* Helps natural photos blend into gray backgrounds slightly */
+    mix-blend-mode: multiply;
+    /* Helps natural photos blend into gray backgrounds slightly */
     transition: transform 0.5s ease;
 }
 
@@ -364,7 +366,8 @@ body {
     align-items: start;
 }
 
-.checkout-summary, .checkout-form {
+.checkout-summary,
+.checkout-form {
     background: var(--card-bg);
     padding: 30px;
     border-radius: var(--radius-lg);
@@ -372,7 +375,8 @@ body {
     border: 1px solid var(--border-color);
 }
 
-.checkout-summary h4, .checkout-form h4 {
+.checkout-summary h4,
+.checkout-form h4 {
     margin-top: 0;
     color: var(--text-main);
     font-size: 1.4rem;
@@ -515,6 +519,121 @@ body {
     transform: translateY(0);
 }
 
+/* ====== BREWING GUIDE PHOTOS ====== */
+.brewing-hero-image {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(42, 54, 38, 0.15);
+}
+
+.brewing-hero-image img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.brewing-hero-image:hover img {
+    transform: scale(1.03);
+}
+
+.info-card.has-image {
+    padding: 0;
+    overflow: hidden;
+}
+
+.info-card-image {
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+}
+
+.info-card-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to top, var(--card-bg), transparent);
+}
+
+.info-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.info-card.has-image:hover .info-card-image img {
+    transform: scale(1.06);
+}
+
+.info-card-body {
+    padding: 30px 40px 40px;
+}
+
+.important-note.has-tip-image {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    overflow: hidden;
+}
+
+.tip-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.tip-image {
+    width: 200px;
+    flex-shrink: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(139, 101, 27, 0.2);
+}
+
+.tip-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.tip-image:hover img {
+    transform: scale(1.05);
+}
+
+@media (max-width: 700px) {
+    .important-note.has-tip-image {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .tip-image {
+        width: 100%;
+    }
+
+    .tip-image img {
+        height: 180px;
+    }
+
+    .brewing-hero-image img {
+        height: 220px;
+    }
+
+    .info-card-image {
+        height: 180px;
+    }
+}
+
 /* ====== INFO PAGES ====== */
 .info-page-content {
     max-width: 1000px;
@@ -630,8 +749,15 @@ body {
 }
 
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .login-header {
@@ -740,6 +866,38 @@ body {
     font-weight: 600;
 }
 
+/* ====== AUTHENTICATION STYLES ====== */
+.auth-view {
+    display: none;
+}
+
+.auth-view.active {
+    display: block;
+}
+
+.error-message {
+    background-color: #fee;
+    border: 1px solid #fcc;
+    color: #c33;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ====== FOOTER ====== */
 .site-footer {
     background-color: var(--text-main);
@@ -755,7 +913,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 40px;
     padding-bottom: 40px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer-section h4 {
