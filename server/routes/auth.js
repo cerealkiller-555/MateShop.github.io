@@ -7,9 +7,12 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
     try {
         const { username, email, password, firstName, lastName } = req.body;
+        const normalizedUsername = username?.trim();
+        const normalizedEmail = email?.trim().toLowerCase();
+        const normalizedPassword = password?.trim();
 
         // Validation
-        if (!username || !email || !password) {
+        if (!normalizedUsername || !normalizedEmail || !normalizedPassword) {
             return res.status(400).json({
                 success: false,
                 message: 'Please provide username, email, and password'
@@ -18,7 +21,7 @@ router.post('/register', async (req, res) => {
 
         // Check if user already exists
         const existingUser = await User.findOne({
-            $or: [{ email }, { username }]
+            $or: [{ email: normalizedEmail }, { username: normalizedUsername }]
         });
 
         if (existingUser) {
@@ -30,11 +33,11 @@ router.post('/register', async (req, res) => {
 
         // Create new user
         const user = new User({
-            username,
-            email,
-            password,
-            firstName,
-            lastName
+            username: normalizedUsername,
+            email: normalizedEmail,
+            password: normalizedPassword,
+            firstName: firstName?.trim(),
+            lastName: lastName?.trim()
         });
 
         await user.save();
@@ -72,9 +75,11 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
+        const normalizedEmail = email?.trim().toLowerCase();
+        const normalizedPassword = password?.trim();
 
         // Validation
-        if (!email || !password) {
+        if (!normalizedEmail || !normalizedPassword) {
             return res.status(400).json({
                 success: false,
                 message: 'Please provide email and password'
@@ -82,7 +87,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Find user and select password
-        const user = await User.findOne({ email }).select('+password');
+        const user = await User.findOne({ email: normalizedEmail }).select('+password');
 
         if (!user) {
             return res.status(401).json({
@@ -92,7 +97,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Compare passwords
-        const isPasswordValid = await user.comparePassword(password);
+        const isPasswordValid = await user.comparePassword(normalizedPassword);
 
         if (!isPasswordValid) {
             return res.status(401).json({

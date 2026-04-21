@@ -5,6 +5,8 @@ const API_BASE_URL = 'http://localhost:5000/api'; // Change this to your deploye
 const AUTH_TOKEN_KEY = 'auth_token';
 const USER_DATA_KEY = 'user_data';
 const LOCAL_USERS_KEY = 'mateshop_local_users';
+const GUEST_CART_KEY = 'sipCart_guest';
+const LEGACY_CART_KEY = 'sipCart';
 
 // All products we sell in the store
 let products = [
@@ -31,26 +33,95 @@ let orderForm = document.getElementById("order-form");
 let summaryList = document.getElementById("summary-list");
 let summaryTotal = document.getElementById("summary-total");
 
-let STORAGE_KEY = "sipCart";
-
 // ====== STORAGE ======
+function getCartStorageKey() {
+    const currentUser = getUserData();
+    if (currentUser && currentUser.id) {
+        return `sipCart_${currentUser.id}`;
+    }
+
+    return GUEST_CART_KEY;
+}
+
+function migrateLegacyCartIfNeeded() {
+    try {
+        const legacyCart = localStorage.getItem(LEGACY_CART_KEY);
+        if (!legacyCart) return;
+
+        const activeCartKey = getCartStorageKey();
+        if (!localStorage.getItem(activeCartKey)) {
+            localStorage.setItem(activeCartKey, legacyCart);
+        }
+
+        localStorage.removeItem(LEGACY_CART_KEY);
+    } catch (e) {
+        // ignore storage failures
+    }
+}
+
 function loadCart() {
     try {
-        let raw = localStorage.getItem(STORAGE_KEY);
+        migrateLegacyCartIfNeeded();
+
+        let raw = localStorage.getItem(getCartStorageKey());
         let parsed = raw ? JSON.parse(raw) : null;
         if (Array.isArray(parsed)) {
             cart = parsed;
+        } else {
+            cart = [];
         }
     } catch (e) {
         // ignore malformed storage
+        cart = [];
     }
 }
 
 function saveCart() {
     try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+        localStorage.setItem(getCartStorageKey(), JSON.stringify(cart));
     } catch (e) {
         // ignore storage failures
+    }
+}
+
+function mergeCartItems(baseCart, incomingCart) {
+    const mergedCart = Array.isArray(baseCart) ? [...baseCart] : [];
+
+    incomingCart.forEach((incomingItem) => {
+        const existingItem = mergedCart.find((item) => item.name === incomingItem.name);
+        if (existingItem) {
+            existingItem.quantity += incomingItem.quantity;
+        } else {
+            mergedCart.push({ ...incomingItem });
+        }
+    });
+
+    return mergedCart;
+}
+
+function moveGuestCartToUserCart() {
+    const currentUser = getUserData();
+    if (!currentUser || !currentUser.id) return;
+
+    try {
+        const guestRaw = localStorage.getItem(GUEST_CART_KEY);
+        const userCartKey = getCartStorageKey();
+        const userRaw = localStorage.getItem(userCartKey);
+
+        const guestCart = guestRaw ? JSON.parse(guestRaw) : [];
+        const userCart = userRaw ? JSON.parse(userRaw) : [];
+
+        if (!Array.isArray(guestCart) || guestCart.length === 0) return;
+
+        const mergedCart = mergeCartItems(
+            Array.isArray(userCart) ? userCart : [],
+            guestCart
+        );
+
+        localStorage.setItem(userCartKey, JSON.stringify(mergedCart));
+        localStorage.removeItem(GUEST_CART_KEY);
+    } catch (e) {
+        // ignore malformed storage
     }
 }
 
@@ -77,6 +148,42 @@ function showToast(message) {
     }, 3000);
 }
 
+function showUserAlert(message) {
+    window.alert(message);
+}
+
+function getFriendlyAuthMessage(message, mode = 'login') {
+    const normalizedMessage = (message || '').trim().toLowerCase();
+
+    if (normalizedMessage.includes('invalid credentials')) {
+        return 'Email or password is incorrect. Please check your details and try again.';
+    }
+
+    if (normalizedMessage.includes('please provide email and password')) {
+        return 'Please enter both your email address and password.';
+    }
+
+    if (normalizedMessage.includes('please provide username, email, and password')) {
+        return 'Please fill in username, email address, and password to continue.';
+    }
+
+    if (normalizedMessage.includes('email or username already exists')) {
+        return 'This email or username is already in use. Try signing in or choose different account details.';
+    }
+
+    if (normalizedMessage.includes('error logging in')) {
+        return 'We could not sign you in right now. Please try again in a moment.';
+    }
+
+    if (normalizedMessage.includes('error registering user')) {
+        return 'We could not create your account right now. Please try again in a moment.';
+    }
+
+    return mode === 'register'
+        ? 'We could not create your account. Please review your details and try again.'
+        : 'We could not sign you in. Please review your details and try again.';
+}
+
 // ====== CART RENDERING ======
 function updateCartDisplay() {
     if (cartCount) {
@@ -91,7 +198,7 @@ function updateCartDisplay() {
     cartItems.innerHTML = "";
 
     if (cart.length === 0) {
-        cartItems.innerHTML = "<p>No items yet</p>";
+        cartItems.innerHTML = "<p>Your cart is empty. Add something you love to get started.</p>";
         subtotal.innerText = "0";
         return;
     }
@@ -177,7 +284,7 @@ function addToCart(productName) {
         cart.push({ name: product.name, price: product.price, quantity: 1 });
     }
     updateCartDisplay();
-    showToast(`${product.name} added to cart`);
+    showToast(`${product.name} was added to your cart.`);
 }
 
 function increaseQuantity(index) {
@@ -219,7 +326,7 @@ function submitOrder(event) {
     if (event) event.preventDefault();
 
     if (cart.length === 0) {
-        alert("Your cart is empty.");
+        showUserAlert("Your cart is empty. Add at least one item before placing an order.");
         return;
     }
 
@@ -231,19 +338,19 @@ function submitOrder(event) {
     let address = orderForm.address.value.trim();
 
     if (!fullName || !email || !phone || !address) {
-        alert("Please fill in all fields.");
+        showUserAlert("Please complete your full name, email, phone number, and address before submitting the order.");
         return;
     }
 
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address.");
+        showUserAlert("Please enter a valid email address so we can confirm your order.");
         return;
     }
 
     let phoneRegex = /^[0-9\s\-\+\(\)]{10,}$/;
     if (!phoneRegex.test(phone)) {
-        alert("Please enter a valid phone number (at least 10 digits).");
+        showUserAlert("Please enter a valid phone number with at least 10 digits.");
         return;
     }
 
@@ -282,7 +389,7 @@ function submitOrder(event) {
                 console.log('SUCCESS!', response.status, response.text);
             }, function (error) {
                 console.log('FAILED...', error);
-                alert("Failed to send email. But order was received.");
+                showUserAlert("Your order was received, but we could not send the confirmation email right now.");
             }).finally(() => {
                 showSuccessMessage();
             });
@@ -336,6 +443,10 @@ function saveUserData(userData) {
     localStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
 }
 
+function normalizePassword(password) {
+    return typeof password === 'string' ? password.trim() : '';
+}
+
 function normalizeEmail(email) {
     return email.trim().toLowerCase();
 }
@@ -372,6 +483,7 @@ function registerLocalUser({ username, email, password, firstName, lastName }) {
     const users = loadLocalUsers();
     const normalizedEmail = normalizeEmail(email);
     const normalizedUsername = username.trim().toLowerCase();
+    const normalizedPassword = normalizePassword(password);
 
     const existingUser = users.find((user) =>
         user.email === normalizedEmail || user.username.toLowerCase() === normalizedUsername
@@ -388,9 +500,9 @@ function registerLocalUser({ username, email, password, firstName, lastName }) {
         id: `local-user-${Date.now()}`,
         username: username.trim(),
         email: normalizedEmail,
-        password,
-        firstName: firstName.trim(),
-        lastName: lastName.trim()
+        password: normalizedPassword,
+        firstName: (firstName || '').trim(),
+        lastName: (lastName || '').trim()
     };
 
     users.push(newUser);
@@ -402,10 +514,11 @@ function registerLocalUser({ username, email, password, firstName, lastName }) {
 function loginLocalUser({ email, password }) {
     const users = loadLocalUsers();
     const normalizedEmail = normalizeEmail(email);
+    const normalizedPassword = normalizePassword(password);
 
     const user = users.find((storedUser) => storedUser.email === normalizedEmail);
 
-    if (!user || user.password !== password) {
+    if (!user || user.password !== normalizedPassword) {
         return {
             success: false,
             message: 'Invalid credentials'
@@ -443,7 +556,7 @@ async function requestAuth(endpoint, payload) {
 function logout() {
     localStorage.removeItem(AUTH_TOKEN_KEY);
     localStorage.removeItem(USER_DATA_KEY);
-    showToast('Logged out successfully');
+    showToast('You have been logged out successfully.');
     window.location.href = 'login.html';
 }
 
@@ -534,8 +647,8 @@ document.addEventListener('DOMContentLoaded', function () {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+            const email = normalizeEmail(document.getElementById('login-email').value);
+            const password = normalizePassword(document.getElementById('login-password').value);
             const errorDiv = document.getElementById('login-error');
 
             try {
@@ -544,17 +657,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.success) {
                     saveAuthToken(data.token);
                     saveUserData(data.user);
-                    showToast('Login successful! Redirecting...');
+                    moveGuestCartToUserCart();
+                    showToast('Welcome back. Redirecting you to the shop...');
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 1000);
                 } else {
-                    errorDiv.textContent = data.message || 'Login failed';
+                    errorDiv.textContent = getFriendlyAuthMessage(data.message, 'login');
                     errorDiv.hidden = false;
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                errorDiv.textContent = 'Login failed. Please try again.';
+                errorDiv.textContent = 'We could not sign you in right now. Please try again in a moment.';
                 errorDiv.hidden = false;
             }
         });
@@ -565,9 +679,9 @@ document.addEventListener('DOMContentLoaded', function () {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const username = document.getElementById('reg-username').value;
-            const email = document.getElementById('reg-email').value;
-            const password = document.getElementById('reg-password').value;
+            const username = document.getElementById('reg-username').value.trim();
+            const email = normalizeEmail(document.getElementById('reg-email').value);
+            const password = normalizePassword(document.getElementById('reg-password').value);
             const firstName = document.getElementById('reg-firstName').value;
             const lastName = document.getElementById('reg-lastName').value;
             const errorDiv = document.getElementById('register-error');
@@ -584,17 +698,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.success) {
                     saveAuthToken(data.token);
                     saveUserData(data.user);
-                    showToast('Account created! Redirecting...');
+                    moveGuestCartToUserCart();
+                    showToast('Your account is ready. Redirecting you to the shop...');
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 1000);
                 } else {
-                    errorDiv.textContent = data.message || 'Registration failed';
+                    errorDiv.textContent = getFriendlyAuthMessage(data.message, 'register');
                     errorDiv.hidden = false;
                 }
             } catch (error) {
                 console.error('Registration error:', error);
-                errorDiv.textContent = 'Registration failed. Please try again.';
+                errorDiv.textContent = 'We could not create your account right now. Please try again in a moment.';
                 errorDiv.hidden = false;
             }
         });
