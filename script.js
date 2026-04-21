@@ -455,22 +455,63 @@ document.addEventListener('DOMContentLoaded', function () {
     const toggleLoginLink = document.getElementById('toggle-login');
     const loginView = document.getElementById('login-view');
     const registerView = document.getElementById('register-view');
+    const loginError = document.getElementById('login-error');
+    const registerError = document.getElementById('register-error');
+    const authTabs = document.querySelectorAll('.auth-tab');
+
+    function setAuthView(view) {
+        const showLogin = view === 'login';
+
+        if (loginView) {
+            loginView.classList.toggle('active', showLogin);
+        }
+
+        if (registerView) {
+            registerView.classList.toggle('active', !showLogin);
+        }
+
+        authTabs.forEach((tab) => {
+            const isActive = tab.dataset.authTarget === view;
+            tab.classList.toggle('active', isActive);
+            tab.setAttribute('aria-selected', String(isActive));
+        });
+
+        if (loginError) {
+            loginError.hidden = true;
+            loginError.textContent = '';
+        }
+
+        if (registerError) {
+            registerError.hidden = true;
+            registerError.textContent = '';
+        }
+    }
 
     // Toggle between login and register views
     if (toggleRegisterLink) {
         toggleRegisterLink.addEventListener('click', (e) => {
             e.preventDefault();
-            loginView.style.display = 'none';
-            registerView.style.display = 'block';
+            setAuthView('register');
         });
     }
 
     if (toggleLoginLink) {
         toggleLoginLink.addEventListener('click', (e) => {
             e.preventDefault();
-            registerView.style.display = 'none';
-            loginView.style.display = 'block';
+            setAuthView('login');
         });
+    }
+
+    authTabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+            setAuthView(tab.dataset.authTarget);
+        });
+    });
+
+    if (window.location.hash === '#register') {
+        setAuthView('register');
+    } else {
+        setAuthView('login');
     }
 
     // Login Form Handler
@@ -494,12 +535,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     }, 1000);
                 } else {
                     errorDiv.textContent = data.message || 'Login failed';
-                    errorDiv.style.display = 'block';
+                    errorDiv.hidden = false;
                 }
             } catch (error) {
                 console.error('Login error:', error);
                 errorDiv.textContent = 'Login failed. Please try again.';
-                errorDiv.style.display = 'block';
+                errorDiv.hidden = false;
             }
         });
     }
@@ -534,12 +575,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     }, 1000);
                 } else {
                     errorDiv.textContent = data.message || 'Registration failed';
-                    errorDiv.style.display = 'block';
+                    errorDiv.hidden = false;
                 }
             } catch (error) {
                 console.error('Registration error:', error);
                 errorDiv.textContent = 'Registration failed. Please try again.';
-                errorDiv.style.display = 'block';
+                errorDiv.hidden = false;
             }
         });
     }

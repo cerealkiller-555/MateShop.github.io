@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="images/cup(1).png">
@@ -45,79 +44,123 @@
             </a>
         </section>
 
-        <div class="login-container">
-            <div class="login-card">
-                <!-- Login Form -->
-                <div id="login-view" class="auth-view active">
-                    <div class="login-header">
-                        <img src="images/cup(1).png" width="60" alt="Logo"
-                            style="margin-bottom: 20px; filter: brightness(0) saturate(100%) invert(18%) sepia(14%) saturate(1443%) hue-rotate(69deg) brightness(97%) contrast(92%);">
-                        <h2>Welcome Back</h2>
-                        <p>Unlock your sustained energy experience.</p>
-                    </div>
-                    <form id="login-form" class="login-form">
-                        <div class="form-group">
-                            <label for="login-email">Email Address</label>
-                            <input type="email" id="login-email" name="email" placeholder="hello@example.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="login-password">Password</label>
-                            <input type="password" id="login-password" name="password" placeholder="••••••••" required>
-                        </div>
-                        <div class="login-options">
-                            <label class="remember-me">
-                                <input type="checkbox" name="remember">
-                                <span>Keep me energized</span>
-                            </label>
-                            <a href="#" class="forgot-password">Forgot password?</a>
-                        </div>
-                        <button type="submit" class="login-button">Sign In to Account</button>
-                        <div id="login-error" class="error-message" style="display: none;"></div>
-                        <div class="login-footer">
-                            <p>New to Sip & Energize? <a href="#" id="toggle-register">Join the community</a></p>
-                        </div>
-                    </form>
-                </div>
+        <section class="login-container">
+            <div class="auth-shell">
+                <aside class="auth-panel">
+                    <div class="auth-panel-badge">Sip & Energize Account</div>
+                    <h2>One account for your daily mate ritual.</h2>
+                    <p>Sign in to track orders, save your details, and get back to your favorite blends faster.</p>
 
-                <!-- Register Form -->
-                <div id="register-view" class="auth-view" style="display: none;">
-                    <div class="login-header">
-                        <img src="images/cup(1).png" width="60" alt="Logo"
-                            style="margin-bottom: 20px; filter: brightness(0) saturate(100%) invert(18%) sepia(14%) saturate(1443%) hue-rotate(69deg) brightness(97%) contrast(92%);">
-                        <h2>Join Our Community</h2>
-                        <p>Start your energy journey with Sip & Energize</p>
+                    <div class="auth-highlights">
+                        <div class="auth-highlight">
+                            <span class="auth-highlight-number">01</span>
+                            <div>
+                                <h3>Faster checkout</h3>
+                                <p>Your saved profile keeps repeat orders quick and smooth.</p>
+                            </div>
+                        </div>
+                        <div class="auth-highlight">
+                            <span class="auth-highlight-number">02</span>
+                            <div>
+                                <h3>Access anywhere</h3>
+                                <p>Use the same account across future updates and store features.</p>
+                            </div>
+                        </div>
+                        <div class="auth-highlight">
+                            <span class="auth-highlight-number">03</span>
+                            <div>
+                                <h3>Community ready</h3>
+                                <p>Create an account in seconds and stay connected to the shop.</p>
+                            </div>
+                        </div>
                     </div>
-                    <form id="register-form" class="login-form">
-                        <div class="form-group">
-                            <label for="reg-username">Username</label>
-                            <input type="text" id="reg-username" name="username" placeholder="Choose a username"
-                                required>
+                </aside>
+
+                <div class="login-card">
+                    <div class="login-brand">
+                        <img src="images/cup(1).png" width="54" alt="Sip & Energize logo">
+                        <span>Sip & Energize</span>
+                    </div>
+
+                    <div class="auth-switcher" role="tablist" aria-label="Authentication views">
+                        <button type="button" class="auth-tab active" id="tab-login" data-auth-target="login"
+                            aria-selected="true">Sign In</button>
+                        <button type="button" class="auth-tab" id="tab-register" data-auth-target="register"
+                            aria-selected="false">Create Account</button>
+                    </div>
+
+                    <div id="login-view" class="auth-view active">
+                        <div class="login-header">
+                            <p class="auth-eyebrow">Welcome back</p>
+                            <h2>Sign in to your account</h2>
+                            <p>Pick up where you left off and head straight to the shop.</p>
                         </div>
-                        <div class="form-group">
-                            <label for="reg-email">Email Address</label>
-                            <input type="email" id="reg-email" name="email" placeholder="hello@example.com" required>
+                        <form id="login-form" class="login-form">
+                            <div class="form-group">
+                                <label for="login-email">Email Address</label>
+                                <input type="email" id="login-email" name="email" placeholder="hello@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" name="password" placeholder="Enter your password"
+                                    required>
+                            </div>
+                            <div class="login-options">
+                                <label class="remember-me">
+                                    <input type="checkbox" name="remember">
+                                    <span>Keep me signed in</span>
+                                </label>
+                                <a href="#" class="forgot-password">Forgot password?</a>
+                            </div>
+                            <button type="submit" class="login-button">Sign In</button>
+                            <div id="login-error" class="error-message" hidden></div>
+                            <div class="login-footer">
+                                <p>Need an account? <a href="#" id="toggle-register">Create one now</a></p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="register-view" class="auth-view">
+                        <div class="login-header">
+                            <p class="auth-eyebrow">New here?</p>
+                            <h2>Create your account</h2>
+                            <p>Join the community and start building your mate routine.</p>
                         </div>
-                        <div class="form-group">
-                            <label for="reg-password">Password</label>
-                            <input type="password" id="reg-password" name="password" placeholder="••••••••" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="reg-firstName">First Name (Optional)</label>
-                            <input type="text" id="reg-firstName" name="firstName" placeholder="John">
-                        </div>
-                        <div class="form-group">
-                            <label for="reg-lastName">Last Name (Optional)</label>
-                            <input type="text" id="reg-lastName" name="lastName" placeholder="Doe">
-                        </div>
-                        <button type="submit" class="login-button">Create Account</button>
-                        <div id="register-error" class="error-message" style="display: none;"></div>
-                        <div class="login-footer">
-                            <p>Already have an account? <a href="#" id="toggle-login">Sign in here</a></p>
-                        </div>
-                    </form>
+                        <form id="register-form" class="login-form">
+                            <div class="form-grid">
+                                <div class="form-group form-group-full">
+                                    <label for="reg-username">Username</label>
+                                    <input type="text" id="reg-username" name="username" placeholder="Choose a username"
+                                        required>
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label for="reg-email">Email Address</label>
+                                    <input type="email" id="reg-email" name="email" placeholder="hello@example.com" required>
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label for="reg-password">Password</label>
+                                    <input type="password" id="reg-password" name="password"
+                                        placeholder="Create a strong password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="reg-firstName">First Name</label>
+                                    <input type="text" id="reg-firstName" name="firstName" placeholder="John">
+                                </div>
+                                <div class="form-group">
+                                    <label for="reg-lastName">Last Name</label>
+                                    <input type="text" id="reg-lastName" name="lastName" placeholder="Doe">
+                                </div>
+                            </div>
+                            <button type="submit" class="login-button">Create Account</button>
+                            <div id="register-error" class="error-message" hidden></div>
+                            <div class="login-footer">
+                                <p>Already registered? <a href="#" id="toggle-login">Sign in instead</a></p>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
     <footer class="site-footer">
